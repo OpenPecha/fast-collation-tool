@@ -1,4 +1,4 @@
-from vocabulary import Vocabulary
+from encoder import Encoder
 from typing import Tuple, List
 from normalizer import Normalizer
 from input_filter import InputFilter
@@ -11,7 +11,7 @@ class Tokenizer():
     Tokenizer class used in Vulgalizer.
     """
 
-    def __init__(self, vocabulary: Vocabulary, normalizer: Normalizer):
+    def __init__(self, encoder: Encoder, normalizer: Normalizer):
         self.vocabulary = vocabulary
         self.normalizer = normalizer
         self.tokens = []

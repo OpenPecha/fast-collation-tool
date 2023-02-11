@@ -1,6 +1,6 @@
 import logging
 from fast_diff_match_patch import diff
-from vulgaligner import TokenMatrix
+from aligner import TokenMatrix
 from tokenizer import Token, TokenList
 from typing import Tuple, List
 from numpy import array
@@ -11,9 +11,9 @@ from utils import *
 # - an integer representing the number of characters
 FDMPDiff = Tuple[str,int]
 
-logger = logging.getLogger('FDMPVulgaligner')
+logger = logging.getLogger('FDMPAligner')
 
-class FDMPVulgaligner():
+class FDMPAligner():
     """
     Aligner using the fast_diff_match_patch (fdmp) library
     """

@@ -1,7 +1,7 @@
 from typing import List
-from vulgaligner import TokenMatrix
+from aligner import TokenMatrix
 from tokenizer import Token
-from vocabulary import Vocabulary
+from encoder import Encoder
 import logging
 
 def token_row_to_text_row(token_row: List[Token], basestr: str, text_for_gap: str = "-"):

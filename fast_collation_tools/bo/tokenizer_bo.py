@@ -3,7 +3,7 @@ import re
 from normalizer import Normalizer
 from tokenizer import Tokenizer, Token, TokenList
 from typing import Tuple
-from vocabulary import Vocabulary
+from encoder import Encoder
 from normalizer_bo import TibetanNormalizer
 
 class TibetanTokenizer(Tokenizer):
@@ -15,7 +15,7 @@ class TibetanTokenizer(Tokenizer):
         "ཀྱིན", "གྱིན", "ཅིང", "ཅིག", "ཅེས", "ཞེས", "པ", "པར", "པས",
         "བ", "བར", "བས", "པོ", "པོར", "པོས", "བོ", "བོར", "བོས"]
 
-    def __init__(self, vocabulary: Vocabulary, normalizer: Normalizer, stop_words = default_stop_words):
+    def __init__(self, encoder: Encoder, normalizer: Normalizer, stop_words = default_stop_words):
         super().__init__(vocabulary, normalizer)
         self.stop_words = stop_words
 
@@ -43,7 +43,7 @@ class TibetanTokenizer(Tokenizer):
 
 if __name__ == "__main__":
     test_string = "ཡེ་ཤེས་ཀྱིས་སྦྱངས་ནས། ཆོས་ཐམས་ཅད་ནམ་མཁའི་དཀྱིལ་ལྟ་བུར་ིརང་གི་"
-    vocabulary = Vocabulary()
+    encoder = Encoder()
     normalizer = TibetanNormalizer()
     tokenizer = TibetanTokenizer(vocabulary=vocabulary, normalizer=normalizer)
     tokens, tokenstr = tokenizer.tokenize(test_string, start=0, end=61)

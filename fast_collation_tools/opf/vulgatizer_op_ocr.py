@@ -1,10 +1,10 @@
 from openpecha.core.pecha import OpenPecha
 from openpecha.core.pecha import OpenPechaFS
 from openpecha.core.layer import Layer, LayerEnum, PechaMetadata
-from vulgaligner_fdmp import FDMPVulgaligner
+from aligner_fdmp import FDMPAligner
 from normalizer_bo import TibetanNormalizer
 from tokenizer_bo import TibetanTokenizer
-from vocabulary import Vocabulary
+from encoder import Encoder
 from opf_utils import OPFragmentLayerAccessor, OPSegment, OPCursor, find_annotation_of_reference, find_comparable_base_id
 import logging
 from matrix_weigher import TokenMatrixWeigher
@@ -22,13 +22,13 @@ class VulgatizerOPTibOCR():
     """
 
     def __init__(self, op_output: OpenPecha):
-        # no need for the vocabulary to decode if we're not debugging
-        self.vocabulary = Vocabulary(allow_decode=logger.isEnabledFor(logging.DEBUG))
-        self.aligner = FDMPVulgaligner()
+        # no need for the encoder to decode if we're not debugging
+        self.encoder = Encoder(allow_decode=logger.isEnabledFor(logging.DEBUG))
+        self.aligner = FDMPAligner()
         self.normalizer = TibetanNormalizer()
         # stop words only make sense when comparing different editions, not ocr of the
         # same scans
-        self.tokenizer = TibetanTokenizer(self.vocabulary, self.normalizer, stop_words=[])
+        self.tokenizer = TibetanTokenizer(self.encoder, self.normalizer, stop_words=[])
         self.ops = []
         self.op_output = op_output
 
@@ -54,7 +54,7 @@ class VulgatizerOPTibOCR():
         token_matrix = self.aligner.get_alignment_matrix(token_strings, token_lists)
         # uncomment to debug the main variables:
         debug_token_lists(logger, token_lists)
-        debug_token_strings(logger, token_strings, self.vocabulary)
+        debug_token_strings(logger, token_strings, self.encoder)
         debug_token_matrix(logger, token_matrix)
         matrix_weigher = self.get_matrix_weigher(confidence_layer_accessors)
         weight_matrix = matrix_weigher.get_weight_matrix(token_matrix)

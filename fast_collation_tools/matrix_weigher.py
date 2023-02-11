@@ -1,6 +1,6 @@
 from typing import List, Tuple
 from token_weigher import TokenWeigher
-from vulgaligner import TokenMatrix
+from aligner import TokenMatrix
 from tokenizer import Token, TokenList
 
 WeightedWeights = Tuple[List[int], int]

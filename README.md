@@ -4,7 +4,7 @@
   <br>
 </h1>
 
-# Fast Collation Tool
+# Fast Collation Tools (FCT)
 
 ## Table of contents
 
@@ -22,6 +22,8 @@
 
 ## Project description
 
+Fast
+
 The Generic Edition Generator is a tool used to create a clean e-text version of a Tibetan work from multiple flawed sources.
 
 Benefits include:
@@ -32,7 +34,9 @@ Benefits include:
 
 The Generic Edition Generator uses a weighted majority algorithm that compares versions of the work syllable by syllable and chooses the most common character from among the versions in each position of the text. Since mistakes—whether made during the woodblock carving, hand copying, digital text inputting, or OCRing process—are unlikely to be the same in the majority of the versions, they are unlikely to outrank the correct characters in any given position of the text. The result is a new clean version called a "vulgate edition."
 
-### Vulgates or vulgate editions
+### Uncritical editions or vulgates
+
+FCT
 
 **vulgate** (noun) /ˈvəl-ˌgāt/ or /ˈvʌlɡeɪt/: *2. a commonly accepted text or reading.*
 

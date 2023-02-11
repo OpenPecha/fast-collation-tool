@@ -1,6 +1,6 @@
 from tokenizer_gen import GenericTokenizer
 from vocabulary import Vocabulary
-from vulgaligner_fdmp import FDMPVulgaligner
+from aligner_fdmp import FDMPAligner
 from normalizer_gen import GenericNormalizer
 from utils import *
 import logging
@@ -9,7 +9,7 @@ import logging
 
 def test_cmp_to_rows(strings, stop_words = []):
     normalizer = GenericNormalizer()
-    vocabulary = Vocabulary()
+    encoder = Encoder()
     tokenizer = GenericTokenizer(vocabulary, normalizer, stop_words)
     token_lists = []
     token_strings = []
@@ -98,7 +98,7 @@ def test_simple():
     test_rows(strings, expected, ["the"])
 
 def test_complex():
-    aligner = FDMPVulgaligner()
+    aligner = FDMPAligner()
     token_strings = ["ABC", "AC"]
     token_lists = [
         [(0,1,2,"AB"), (1,2,1,"C")],

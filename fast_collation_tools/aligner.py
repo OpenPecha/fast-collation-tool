@@ -3,9 +3,9 @@ from typing import List
 
 TokenMatrix = List[TokenList]
 
-class Vulgaligner():
+class Aligner():
     """
-    Aligner interface used in Vulgalizer.
+    Aligner interface.
     """
 
     def get_alignment_matrix(self, token_strings: List[str], token_lists: List[TokenList]) -> TokenMatrix:
