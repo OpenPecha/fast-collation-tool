@@ -11,20 +11,19 @@
 <p align="center">
   <a href="#project-description">Project description</a> •
   <a href="#who-this-project-is-for">Who this project is for</a> •
-  <a href="#project-dependencies">Project dependencies</a> •
+  <a href="#dependencies">Dependencies</a> •
   <a href="#instructions-for-use">Instructions for use</a> •
+  <a href="#ftc-workflow">FTC workflow</a> •
+  <a href="#previous-work">Previous work</a> •
   <a href="#contributing-guidelines">Contributing guidelines</a> •
-  <a href="#additional-documentation">Additional documentation</a> •
-  <a href="#need-help">How to get help</a> •
+  <a href="#need-help">Help</a> •
   <a href="#terms-of-use">Terms of use</a>
 </p>
 <hr>
 
 ## Project description
 
-Fast
-
-The Generic Edition Generator is a tool used to create a clean e-text version of a Tibetan work from multiple flawed sources.
+FTC creates a clean e-text version of a Tibetan work from multiple flawed sources.
 
 Benefits include:
 
@@ -32,11 +31,9 @@ Benefits include:
 - Creating high-quality e-texts from low-quality sources
 - Doesn't require a spell checker (which doesn't exist yet for Tibetan language)
 
-The Generic Edition Generator uses a weighted majority algorithm that compares versions of the work syllable by syllable and chooses the most common character from among the versions in each position of the text. Since mistakes—whether made during the woodblock carving, hand copying, digital text inputting, or OCRing process—are unlikely to be the same in the majority of the versions, they are unlikely to outrank the correct characters in any given position of the text. The result is a new clean version called a "vulgate edition."
+FTC uses a weighted majority algorithm that compares versions of the work syllable-by-syllable and chooses the most common character from among the versions in each position of the text. Since mistakes—whether made during the woodblock carving, hand copying, digital text inputting, or OCRing process—are unlikely to be the same in the majority of the versions, they are unlikely to outrank the correct characters in any given position of the text. The result is a new clean version called a "vulgate edition."
 
 ### Uncritical editions or vulgates
-
-FCT
 
 **vulgate** (noun) /ˈvəl-ˌgāt/ or /ˈvʌlɡeɪt/: *2. a commonly accepted text or reading.*
 
@@ -51,41 +48,40 @@ This less common sense of the term *vulgate* represents the objective of this pr
 This project is intended for:
 
 - Publishers who need clean copies of texts to publish books
-- Developers who need clean data to help train AI models
+- Developers who need clean data to train AI models
 - Anyone who needs to proofread a Tibetan text and has access to multiple versions, such as in the [BDRC library](https://library.bdrc.io).
 
-## Project dependencies
+## Dependencies
 
 Before you start, ensure you've installed:
 
-- python >= 3.8
+- python >= 3.7
 - [openpecha](https://github.com/OpenPecha/Toolkit)
-- [pedurma](https://github.com/Esukhia/pedurma)
-- antx
-- [fast-diff-match-patch](https://pypi.org/project/fast-diff-match-patch/)
+- regex
+- fast-diff-match-patch
 
 ## Requirements 
 
 To create a vulgate edition, you'll need:
 
-- A reference pecha in the OPF format
+- A reference pecha in the [OPF format](https://openpecha.org/data/opf-format/)
 - Several witness pechas in the OPF format (a witness is a version of a text)
 
 > **Note** To convert files into the OPF format, use [OpenPecha Tools](https://github.com/OpenPecha/Toolkit). 
 > 
 > You can also convert scanned texts in the [BDRC library](https://library.bdrc.io) to the OPF format with the [OCR Pipeline](https://tools.openpecha.org/ocr/).
 > 
-> To test Generic Edition Generator, you can also the OPF files in the [text folder](https://github.com/OpenPecha/generic-edition-generator/tree/main/test/) of this repo.
+> To test FTC, you can also use the OPF files in the [text folder](https://github.com/OpenPecha/fast-collation-tools/tree/main/tests) in this repo.
 
 ## Instructions for use
 
-### Configure the Generic Edition Generator
+### Configure FTC
 
 Assuming you've installed the software above and have OPF files:
 
 1. Clone this repo.
 1. Add witnesses in the OPF format into your cloned repo.
-1. Open `get_generic_editon.py` in a code editor.
+1. Open `vulgatizer_op_ocr.py` in a code editor.
 1. Update the paths to the actual witness folders in this code block:
 
 ```
@@ -98,9 +94,9 @@ def test_merger():
 	vulgatizer.create_vulgate()
 ```
 
-### Run the Generic Edition Generator
+### Run FTC
 
-- Run `get_generic_editon.py`
+- Run `vulgatizer_op_ocr.py`
 
 The vulgate edition OPF will be saved in `./data/opfs/generic_editions`.
 
@@ -108,17 +104,29 @@ The vulgate edition OPF will be saved in `./data/opfs/generic_editions`.
 
 - No code to detect [transpositions](http://multiversiondocs.blogspot.com/2008/10/transpositions.html).
 
-## Contributing guidelines
+## FTC workflow
 
-If you'd like to help out, check out our [contributing guidelines](/CONTRIBUTING.md).
+FTC creates vulgate editions in three steps:
 
-## Additional documentation
+- Preprocessing
+- Alignment
+- Vulgatization
 
-How the Generic Edition Generator creates a generic edition
+Here is that process:
 
-![generic_flowchart](https://user-images.githubusercontent.com/24893704/206728922-66a60951-2a1f-4e16-9692-b9720853782b.jpg)
+### Preprocessing
 
-Previous work:
+![image](https://user-images.githubusercontent.com/51434640/218644335-7b74e48e-649a-45e4-9441-b550b6e70825.png)
+
+### Alignment
+
+![image](https://user-images.githubusercontent.com/51434640/218644409-14e73234-bdda-4ae6-aa15-6a9fce600889.png)
+
+### Vulgatization
+
+![image](https://user-images.githubusercontent.com/51434640/218644467-a2c487d5-8313-4940-b640-78bc2258e78c.png)
+
+## Previous work:
 
 ### text alignment
 
@@ -144,12 +152,17 @@ Previous work:
 - [Needleman–Wunsch algorithm](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm)
 - [Spencer 2004](http://dx.doi.org/10.1007/s10579-004-8682-1): Spencer M., Howe and Christopher J., 2004. Collating Texts Using Progressive Multiple Alignment. Computers and the Humanities. 38/2004, 253–270.
 
+
+## Contributing guidelines
+
+If you'd like to help out, check out our [contributing guidelines](/CONTRIBUTING.md).
+
 ## Need help?
 
-- File an [issue](https://github.com/OpenPecha/generic-edition-generator/issues/new)
-- Join our [Discord](https://discord.com/invite/7GFpPFSTeA) and ask us there
-- Email us at openpecha[at]gmail.com
+- File an [issue](https://github.com/OpenPecha/fast-collation-tools/issues/new).
+- Join our [Discord](https://discord.com/invite/7GFpPFSTeA) and ask us there.
+- Email us at openpecha[at]gmail[dot]com.
 
 ## Terms of use
 
-The Generic Edition Generator is licensed under the [MIT License](/LICENSE.md).
+Fast Collation Tools is licensed under the [Apache license](/LICENSE.md).
