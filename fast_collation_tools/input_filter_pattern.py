@@ -1,6 +1,7 @@
 import re
 from typing import Pattern
 from input_filter import InputFilter
+import logging
 
 class PatternInputFilter(InputFilter):
 
@@ -8,12 +9,21 @@ class PatternInputFilter(InputFilter):
     Regex Filter inspired from Apache Lucene's PatternReplaceCharFilter
     """
 
+    REPL_STR_SIMPLE = 0
+    REPL_STR_COMPLEX = 1
+    REPL_FUN = 2
+
     def __init__(self, arg, pattern: Pattern, replacement):
         super().__init__(arg)
         self.pattern = pattern
         self.replacement = replacement
-        self.complex_replacement = not isinstance(replacement, str) or "\\" in replacement
-        self.replacement_len = 0 if self.complex_replacement else len(replacement)
+        self.replacement_type = self.REPL_STR_SIMPLE
+        if callable(replacement):
+            self.replacement_type = self.REPL_FUN
+        elif "\\" in replacement:
+            self.replacement_type = self.REPL_STR_COMPLEX
+            logging.warn("please use function instead of substitution strings in PatternInputFilter")
+        self.replacement_len = 0 if self.replacement_type != self.REPL_STR_SIMPLE else len(replacement)
 
     def get_string(self):
         orig = self.get_arg_string()
@@ -28,12 +38,20 @@ class PatternInputFilter(InputFilter):
             last_match_end = m.end()
             output_len += skipped_size
 
-            # if the replacement is a simple string with no substitution,
-            # we can use it directly
-            replacement = self.replacement
-            replacement_len = self.replacement_len
-            if self.complex_replacement:
-                # If the replacement has some substitutions or is a function:
+            replacement = ""
+            replacement_len = 0
+
+            if self.replacement_type == self.REPL_FUN:
+                # if replacement is a function we can just apply it on the match
+                replacement = self.replacement(m)
+                replacement_len = len(replacement)
+            elif self.replacement_type == self.REPL_STR_SIMPLE:
+                # if the replacement is a simple string with no substitution,
+                # we can use it directly
+                replacement = self.replacement
+                replacement_len = self.replacement_len
+            elif self.replacement_type == self.REPL_STR_COMPLEX:
+                # If the replacement has some substitutions:
                 # Unfortunately the Python re match object does not allow
                 # substitution (as far as I can see), so we have to apply
                 # the regexp again on the match. This module will thus

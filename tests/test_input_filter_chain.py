@@ -47,7 +47,7 @@ def test_regex_simple():
     assert(filtered.correct_position(1) == 1) # b|ddddc -> b|bcc
     assert(filtered.correct_position(0) == 0) # |bddddc -> |bbcc
     # complex replacement
-    filtered = PatternInputFilter(input_str, re.compile(r"(b)bc(c)"), r"\2d\1")
+    filtered = PatternInputFilter(input_str, re.compile(r"(b)bc(c)"), lambda x: x.group(2)+"d"+x.group(1))
     s = filtered.get_string()
     assert(s == "cdb")
     assert(filtered.correct_position(3) == 4) # cdb| -> bbcc|
